@@ -98,7 +98,9 @@ class _PlayMenuState extends State<PlayMenu> {
             padding: const EdgeInsets.all(10),
             child: MaterialButton(
               onPressed: () {
-                print("Unsupported u dumbass");
+                grid = Grid.infinite();
+                stringyGame = StringyGame();
+                Navigator.pushNamed(context, '/game');
               },
               color: primaryColor,
               child: Text("Play Infinite Grid", style: TextStyle(fontSize: 9.sp)),

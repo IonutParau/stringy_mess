@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:stringy_mess/formats/decoders.dart';
 
 Set<String> cells = {
@@ -73,14 +75,27 @@ class Cell {
 
 class Grid {
   List<List<Cell>> _grid = [];
+  final _infgrid = HashMap<String, Cell>();
 
   int width, height;
+  bool infinite = false;
 
   Grid(this.width, this.height) {
     init();
   }
 
+  Grid.infinite()
+      : width = 0,
+        height = 0 {
+    infinite = true;
+    init();
+  }
+
   void init() {
+    if (infinite) {
+      _infgrid.clear();
+      return;
+    }
     _grid = [];
 
     for (var x = 0; x < width; x++) {
@@ -93,18 +108,41 @@ class Grid {
   }
 
   bool doesNotWrap(int x, int y) {
+    if (infinite) return true;
     return (x >= 0 && y >= 0 && x < width && y < height);
   }
 
   Cell read(int x, int y) {
+    if (infinite) return _infgrid["$x $y"] ?? Cell("gol");
     return _grid[x % width][y % height];
   }
 
   void write(int x, int y, Cell cell) {
+    if (infinite) {
+      _infgrid["$x $y"] = cell;
+      return;
+    }
     _grid[x % width][y % height] = cell;
   }
 
+  void reset(int x, int y) {
+    if (infinite) {
+      _infgrid.remove("$x $y");
+    } else {
+      _grid[x % width][y % height] = Cell("gol");
+    }
+  }
+
   void iterate(void Function(int x, int y, Cell cell) cb) {
+    if (infinite) {
+      _infgrid.forEach((key, cell) {
+        final parts = key.split(' ');
+        final x = int.parse(parts[0]);
+        final y = int.parse(parts[1]);
+        cb(x, y, cell);
+      });
+      return;
+    }
     for (var x = 0; x < width; x++) {
       for (var y = 0; y < height; y++) {
         cb(x, y, _grid[x][y]);
@@ -124,7 +162,7 @@ class Grid {
   }
 
   Grid get copy {
-    final g = Grid(width, height);
+    final g = infinite ? Grid.infinite() : Grid(width, height);
 
     iterate((x, y, cell) => g.write(x, y, cell.copy));
 

@@ -122,19 +122,25 @@ class StringyGame extends Game with KeyboardEvents {
     if (!loaded) {
       return;
     }
-    int sx = smoothCamX ~/ cellSize;
-    int sy = smoothCamY ~/ cellSize;
-    int ex = sx + (canvasSize.x / cellSize).ceil();
-    int ey = sy + (canvasSize.y / cellSize).ceil();
-
-    sx = max(sx, 0);
-    sy = max(sy, 0);
-    ex = min(ex, grid.width - 1);
-    ey = min(ey, grid.height - 1);
-
-    for (var x = sx; x <= ex; x++) {
-      for (var y = sy; y <= ey; y++) {
+    if (grid.infinite) {
+      grid.iterate((x, y, cell) {
         drawCell(x, y);
+      });
+    } else {
+      int sx = smoothCamX ~/ cellSize;
+      int sy = smoothCamY ~/ cellSize;
+      int ex = sx + (canvasSize.x / cellSize).ceil();
+      int ey = sy + (canvasSize.y / cellSize).ceil();
+
+      sx = max(sx, 0);
+      sy = max(sy, 0);
+      ex = min(ex, grid.width - 1);
+      ey = min(ey, grid.height - 1);
+
+      for (var x = sx; x <= ex; x++) {
+        for (var y = sy; y <= ey; y++) {
+          drawCell(x, y);
+        }
       }
     }
 
@@ -225,7 +231,7 @@ class StringyGame extends Game with KeyboardEvents {
       for (var x = cx - brushSize; x <= cx + brushSize; x++) {
         for (var y = cy - brushSize; y <= cy + brushSize; y++) {
           if (grid.doesNotWrap(x, y)) {
-            grid.write(x, y, Cell(current));
+            keysPressed.contains(LogicalKeyboardKey.controlLeft) ? grid.reset(x, y) : grid.write(x, y, Cell(current));
           }
         }
       }
