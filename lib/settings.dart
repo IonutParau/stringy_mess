@@ -5,6 +5,7 @@ class SettingsManager {
     UserTheme.ocean(),
     UserTheme.nord(),
     UserTheme.chaotic(),
+    UserTheme.cosmic(),
     UserTheme.walrus(),
     UserTheme.stringy(),
     UserTheme.sunny(),

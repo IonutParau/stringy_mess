@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:flame/flame.dart';
+
 var primaryColor = const Color.fromARGB(255, 7, 38, 68);
 var secondaryColor = const Color.fromARGB(255, 1, 27, 53);
 var turnaryColor = const Color.fromARGB(255, 5, 34, 62);
@@ -74,6 +76,10 @@ class UserTheme {
 
   factory UserTheme.stringy() {
     return UserTheme.fromStr("Stringy/FF7676/D94D4D/B52D2D");
+  }
+
+  factory UserTheme.cosmic() {
+    return UserTheme.fromStr("Cosmic/0E5753/064844/013632");
   }
 
   @override

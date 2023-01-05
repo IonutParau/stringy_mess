@@ -93,9 +93,6 @@ class StringyGame extends Game with KeyboardEvents {
   @override
   Future<void>? onLoad() async {
     originalCellSize = cellSize;
-    for (var id in cells) {
-      await Flame.images.load('cells/$id.png');
-    }
     loaded = true;
     return super.onLoad();
   }

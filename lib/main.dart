@@ -1,11 +1,16 @@
+import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:stringy_mess/game/game.dart';
 import 'package:stringy_mess/game/game_ui.dart';
 import 'package:stringy_mess/pages/home.dart';
 import 'package:stringy_mess/theme.dart';
 
-void main() {
+void main() async {
   initBaseRules();
+  WidgetsFlutterBinding.ensureInitialized();
+  for (var id in cells) {
+    await Flame.images.load('cells/$id.png');
+  }
   runApp(const MyApp());
 }
 
