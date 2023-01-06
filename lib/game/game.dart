@@ -10,6 +10,8 @@ Set<String> cells = {
   "maze",
   "square",
   "surface",
+  "stability",
+  "chaos",
   "gap",
   "wall",
   "sunflower",
@@ -17,9 +19,9 @@ Set<String> cells = {
   "bosco",
   "spaceship",
   "boom",
-  "chaos",
-  "chaotic_gol",
-  "chaotic_bosco",
+  "stable_gol",
+  "stable_bosco",
+  "stable_sunflower",
 };
 
 void initBaseRules() {
@@ -37,11 +39,13 @@ void initBaseRules() {
   rules["bosco"] = parseCellRules("H1@5,34-45,0-32|58-121,B,1,1");
   rules["spaceship"] = parseCellRules("STD@2/2/5/M");
   rules["boom"] = parseCellRules("STD@1-8//5/M");
-  rules["chaotic_bosco"] = parseCellRules("H1@5,34-45,0-32|58-121,B,1,2");
-  rules["chaotic_gol"] = parseCellRules("H1@1,3,0|1|4-8,B,1,3");
+  rules["stable_bosco"] = parseCellRules("H1@5,34-45,0-32|58-121,B,1,2");
+  rules["stable_gol"] = parseCellRules("H1@1,3,0|1|4-8,B,1,3");
   rules["brian_brain"] = parseCellRules("H1@1,2,0-8,B,1,2");
   rules["string"] = parseCellRules("H1@2,5,0-4|8-23,B,1,1");
   rules["surface"] = parseCellRules("H1@2,6,0-4|7-23,B,1,3");
+  rules["stability"] = parseCellRules("STD@3/3-6/7/M");
+  rules["stable_sunflower"] = parseCellRules("GoSC1-D034R2d")..states = 5;
 }
 
 Map<String, CellRules> rules = {};
