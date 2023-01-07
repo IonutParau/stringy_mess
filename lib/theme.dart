@@ -34,6 +34,7 @@ class UserTheme {
     primaryColor = primary;
     secondaryColor = secondary;
     turnaryColor = turnary;
+    userTheme = this;
     themeRefresher.sink.add(this);
   }
 

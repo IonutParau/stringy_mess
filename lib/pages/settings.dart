@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 import 'package:stringy_mess/settings.dart';
 import 'package:stringy_mess/theme.dart';
 
@@ -33,6 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     if (theme != null) {
                       userTheme = theme;
                       theme.apply();
+                      settingsManager.setSavedTheme(theme);
                       setState(() {});
                     }
                   },

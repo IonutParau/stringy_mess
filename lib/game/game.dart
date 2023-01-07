@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:stringy_mess/formats/decoders.dart';
 
@@ -12,12 +13,15 @@ Set<String> cells = {
   "surface",
   "stability",
   "chaos",
+  "blobby",
   "gap",
   "wall",
   "sunflower",
+  "rose",
   "spherical",
   "bosco",
   "spaceship",
+  "organic",
   "boom",
   "stable_gol",
   "stable_bosco",
@@ -35,7 +39,7 @@ void initBaseRules() {
   rules["wall"] = parseCellRules("GoSC1-DR012345678n");
   rules["sunflower"] = parseCellRules("GoSC1-D034R2d");
   rules["spherical"] = parseCellRules("H1@2,4|5,0-2|6-25,C,1,1");
-  rules["seeds"] = parseCellRules("STD@2");
+  rules["seeds"] = parseCellRules("STD@/2/1/M");
   rules["bosco"] = parseCellRules("H1@5,34-45,0-32|58-121,B,1,1");
   rules["spaceship"] = parseCellRules("STD@2/2/5/M");
   rules["boom"] = parseCellRules("STD@1-8//5/M");
@@ -44,8 +48,11 @@ void initBaseRules() {
   rules["brian_brain"] = parseCellRules("H1@1,2,0-8,B,1,2");
   rules["string"] = parseCellRules("H1@2,5,0-4|8-23,B,1,1");
   rules["surface"] = parseCellRules("H1@2,6,0-4|7-23,B,1,3");
-  rules["stability"] = parseCellRules("STD@3/3-6/7/M");
+  rules["stability"] = parseCellRules("STD@3-6/3/7/M");
   rules["stable_sunflower"] = parseCellRules("GoSC1-D034R2d")..states = 5;
+  rules["rose"] = parseCellRules("GoSC1-D034R2a");
+  rules["blobby"] = parseCellRules("STD@3,4-5,7-8/3/6/M");
+  rules["organic"] = parseCellRules("STD@6-7/2-3,5,6,8/20/M");
 }
 
 Map<String, CellRules> rules = {};
@@ -66,6 +73,12 @@ class Cell {
     states = rules[id]?.states ?? 1;
     lastState = states;
     state = states;
+  }
+
+  Cell.withState(this.id, int currState) {
+    states = rules[id]?.states ?? 1;
+    lastState = max(min(currState, states), 0);
+    state = max(min(currState, states), 0);
   }
 
   Cell get copy => Cell(id)

@@ -1,8 +1,10 @@
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stringy_mess/game/game.dart';
 import 'package:stringy_mess/game/game_ui.dart';
 import 'package:stringy_mess/pages/home.dart';
+import 'package:stringy_mess/settings.dart';
 import 'package:stringy_mess/theme.dart';
 
 void main() async {
@@ -11,6 +13,8 @@ void main() async {
   for (var id in cells) {
     await Flame.images.load('cells/$id.png');
   }
+  storage = await SharedPreferences.getInstance();
+  settingsManager.load();
   runApp(const MyApp());
 }
 

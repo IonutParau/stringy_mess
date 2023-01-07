@@ -59,6 +59,9 @@ class StringyGame extends Game with KeyboardEvents {
 
   bool loaded = false;
 
+  int currentState = 1;
+  int maxState = 1;
+
   Set<LogicalKeyboardKey> keysPressed = {};
 
   String current = "gol";
@@ -165,10 +168,23 @@ class StringyGame extends Game with KeyboardEvents {
           canvas,
           position: Vector2(mousex - cellSize / 2 + ox * cellSize, mousey - cellSize / 2 + oy * cellSize),
           size: Vector2.all(cellSize),
-          overridePaint: Paint()..color = Colors.white.withOpacity(0.1),
+          overridePaint: Paint()..color = Colors.white.withOpacity(0.2 * (currentState / maxState)),
         );
       }
     }
+
+    final textPos = Vector2(mousex - cellSize / 2 - brushSize * cellSize, mousey - cellSize / 2 + brushSize * cellSize + 1.3 * cellSize);
+
+    final text = "${brushSize * 2 + 1}x${brushSize * 2 + 1} | $currentState / $maxState (${(currentState / maxState * 100).toStringAsFixed(2)}%)";
+
+    final tp = TextPainter(
+      text: TextSpan(
+        text: text,
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    tp.layout();
+    tp.paint(canvas, textPos.toOffset());
   }
 
   void drawCell(int x, int y) {
@@ -216,7 +232,7 @@ class StringyGame extends Game with KeyboardEvents {
       for (var x = cx - brushSize; x <= cx + brushSize; x++) {
         for (var y = cy - brushSize; y <= cy + brushSize; y++) {
           if (grid.doesNotWrap(x, y)) {
-            grid.write(x, y, Cell.alive(current));
+            grid.write(x, y, Cell.withState(current, currentState));
           }
         }
       }
@@ -303,6 +319,12 @@ class StringyGame extends Game with KeyboardEvents {
             brushSize = max(brushSize - 1, 0);
           } else if (event.scrollDelta.dy < 0) {
             brushSize++;
+          }
+        } else if (keysPressed.contains(LogicalKeyboardKey.shiftLeft)) {
+          if (event.scrollDelta.dy > 0) {
+            currentState = max(currentState - 1, 1);
+          } else if (event.scrollDelta.dy < 0) {
+            currentState = min(currentState + 1, maxState);
           }
         } else {
           if (event.scrollDelta.dy > 0) {

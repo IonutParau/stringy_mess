@@ -26,8 +26,8 @@ CellRules parseSTDcell(String str) {
     parts.add('M');
   }
 
-  final brules = parts[0].split(',');
-  final srules = parts[1].split(',');
+  final srules = parts[0].split(',');
+  final brules = parts[1].split(',');
   final states = int.parse(parts[2]);
   final neighborCounting = parts[3];
 
