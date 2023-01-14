@@ -173,17 +173,19 @@ class StringyGame extends Game with KeyboardEvents {
       }
     }
 
-    final textPos = Vector2(mousex - cellSize / 2 - brushSize * cellSize, mousey - cellSize / 2 + brushSize * cellSize + 1.3 * cellSize);
-
     final text = "${brushSize * 2 + 1}x${brushSize * 2 + 1} | $currentState / $maxState (${(currentState / maxState * 100).toStringAsFixed(2)}%)";
 
     final tp = TextPainter(
       text: TextSpan(
         text: text,
       ),
+      textAlign: TextAlign.center,
       textDirection: TextDirection.ltr,
     );
+
     tp.layout();
+
+    final textPos = Vector2(mousex - tp.width / 2, mousey - cellSize / 2 + brushSize * cellSize + 1.3 * cellSize);
     tp.paint(canvas, textPos.toOffset());
   }
 

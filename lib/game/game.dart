@@ -42,7 +42,7 @@ void initBaseRules() {
   rules["seeds"] = parseCellRules("STD@/2/1/M");
   rules["bosco"] = parseCellRules("H1@5,34-45,0-32|58-121,B,1,1");
   rules["spaceship"] = parseCellRules("STD@2/2/5/M");
-  rules["boom"] = parseCellRules("STD@1-8//5/M");
+  rules["boom"] = parseCellRules("STD@/1-8/5/M");
   rules["stable_bosco"] = parseCellRules("H1@5,34-45,0-32|58-121,B,1,2");
   rules["stable_gol"] = parseCellRules("H1@1,3,0|1|4-8,B,1,3");
   rules["brian_brain"] = parseCellRules("H1@1,2,0-8,B,1,2");
