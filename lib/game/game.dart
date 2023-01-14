@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'dart:math';
 
-import 'package:stringy_mess/formats/decoders.dart';
+import 'package:stringy_mess/formats/usage.dart';
 
 Set<String> cells = {
   "gol",
@@ -32,7 +32,8 @@ void initBaseRules() {
   if (rules.isNotEmpty) return;
 
   rules["gol"] = parseCellRules("GoSC1-D0145678R3n");
-  rules["chaos"] = parseCellRules("H1@5,41|79|34|73|18|47|89|18|47|91,31|9|38|2|13,C,1,10");
+  rules["chaos"] =
+      parseCellRules("H1@5,41|79|34|73|18|47|89|18|47|91,31|9|38|2|13,C,1,10");
   rules["maze"] = parseCellRules("GoSC1-R1n");
   rules["square"] = parseCellRules("GoSC1-D04R2a");
   rules["gap"] = parseCellRules("GoSC1-D012345678Rn");
@@ -88,6 +89,14 @@ class Cell {
 
   bool get wasDead => lastState < states;
   bool get dead => state < states;
+
+  void invert() {
+    state = states - state;
+  }
+
+  void invertLast() {
+    lastState = states - lastState;
+  }
 }
 
 class Grid {
@@ -214,7 +223,8 @@ class CellRules {
   int newState(Grid grid, Cell cell, int x, int y) {
     final neighbors = count(grid, x, y);
 
-    if (cell.lastState < cell.states && cell.lastState != 0) return cell.lastState - 1;
+    if (cell.lastState < cell.states && cell.lastState != 0)
+      return cell.lastState - 1;
 
     if (cell.lastState == 0) {
       return birth.contains(neighbors) ? cell.states : 0;

@@ -1,8 +1,12 @@
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stringy_mess/game/game.dart';
 import 'package:stringy_mess/game/game_ui.dart';
 import 'package:stringy_mess/theme.dart';
+
+import '../formats/usage.dart';
 
 class GameBar extends StatefulWidget {
   const GameBar({super.key});
@@ -54,7 +58,8 @@ class _GameBarState extends State<GameBar> {
                         itemBuilder: (ctx, i) {
                           return MaterialButton(
                             child: Opacity(
-                              opacity: stringyGame.current == cellsL[i] ? 1 : 0.2,
+                              opacity:
+                                  stringyGame.current == cellsL[i] ? 1 : 0.2,
                               child: Image.asset(
                                 'assets/images/cells/${cellsL[i]}.png',
                                 width: 8.w,
@@ -65,7 +70,8 @@ class _GameBarState extends State<GameBar> {
                             ),
                             onPressed: () {
                               stringyGame.current = cellsL[i];
-                              stringyGame.currentState = rules[cellsL[i]]!.states;
+                              stringyGame.currentState =
+                                  rules[cellsL[i]]!.states;
                               stringyGame.maxState = rules[cellsL[i]]!.states;
                               setState(() {});
                             },
@@ -95,15 +101,21 @@ class _GameBarState extends State<GameBar> {
                         filterQuality: FilterQuality.none,
                       ),
                       onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) {
-                            return const AlertDialog(
-                              title: Text('Not implemented!'),
-                              content: Text('This feature is not yet implemented'),
-                            );
-                          },
-                        );
+                        FlutterClipboard.controlV().then((v) {
+                          if (v is ClipboardData) {
+                            try {
+                              grid = parseGrid(v.text ?? "");
+                            } catch (e) {
+                              showDialog(
+                                context: context,
+                                builder: (ctx) => AlertDialog(
+                                  title: const Text('Error'),
+                                  content: Text(e.toString()),
+                                ),
+                              );
+                            }
+                          }
+                        });
                         setState(() {});
                       },
                     ),
@@ -127,16 +139,8 @@ class _GameBarState extends State<GameBar> {
                         fit: BoxFit.cover,
                         filterQuality: FilterQuality.none,
                       ),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) {
-                            return const AlertDialog(
-                              title: Text('Not implemented!'),
-                              content: Text('This feature is not yet implemented'),
-                            );
-                          },
-                        );
+                      onPressed: () async {
+                        await FlutterClipboard.controlC(encodeGrid(grid));
                         setState(() {});
                       },
                     ),
@@ -183,7 +187,9 @@ class _GameBarState extends State<GameBar> {
                     child: MaterialButton(
                       height: 5.h,
                       child: Image.asset(
-                        stringyGame.running ? 'assets/images/buttons/pause_btn.png' : 'assets/images/buttons/play_btn.png',
+                        stringyGame.running
+                            ? 'assets/images/buttons/pause_btn.png'
+                            : 'assets/images/buttons/play_btn.png',
                         width: 8.w,
                         height: 8.w,
                         fit: BoxFit.cover,
@@ -215,7 +221,8 @@ class _GameBarState extends State<GameBar> {
                         filterQuality: FilterQuality.none,
                       ),
                       onPressed: () {
-                        Navigator.popUntil(context, (route) => route.settings.name == "/home");
+                        Navigator.popUntil(
+                            context, (route) => route.settings.name == "/home");
                       },
                     ),
                   ),
