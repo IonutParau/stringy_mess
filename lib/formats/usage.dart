@@ -1,7 +1,7 @@
 import 'package:stringy_mess/formats/cells/gosc1.dart';
 import 'package:stringy_mess/formats/cells/h1.dart';
 import 'package:stringy_mess/formats/cells/std.dart';
-import 'package:stringy_mess/formats/levels/ML1.dart';
+import 'package:stringy_mess/formats/levels/ml1.dart';
 import 'package:stringy_mess/game/game.dart';
 
 CellRules parseCellRules(String rules) {
