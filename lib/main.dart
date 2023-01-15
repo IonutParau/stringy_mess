@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         stream: themeRefresher.stream,
         builder: (context, snapshot) {
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Stringy Mess',
             theme: ThemeData.dark(
               useMaterial3: true,
             ).copyWith(

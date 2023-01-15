@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:math';
 
+import 'package:stringy_mess/formats/cells/h1.dart';
 import 'package:stringy_mess/formats/usage.dart';
 
 Set<String> cells = {
@@ -18,11 +19,17 @@ Set<String> cells = {
   "wall",
   "sunflower",
   "rose",
+  "heat",
   "spherical",
   "bosco",
   "spaceship",
   "organic",
+  "wind",
+  "fog",
+  "fluid",
   "boom",
+  "expand",
+  "pulse",
   "stable_gol",
   "stable_bosco",
   "stable_sunflower",
@@ -32,9 +39,8 @@ void initBaseRules() {
   if (rules.isNotEmpty) return;
 
   rules["gol"] = parseCellRules("GoSC1-D0145678R3n");
-  rules["chaos"] =
-      parseCellRules("H1@5,41|79|34|73|18|47|89|18|47|91,31|9|38|2|13,C,1,10");
-  rules["maze"] = parseCellRules("GoSC1-R1n");
+  rules["chaos"] = parseCellRules("H1@5,41|79|34|73|18|47|89|18|47|91,31|9|38|2|13,C,1,10");
+  rules["maze"] = parseCellRules("H1@1,1,1,B,1,7,,2|6|4|5|7|3|1");
   rules["square"] = parseCellRules("GoSC1-D04R2a");
   rules["gap"] = parseCellRules("GoSC1-D012345678Rn");
   rules["wall"] = parseCellRules("GoSC1-DR012345678n");
@@ -53,7 +59,13 @@ void initBaseRules() {
   rules["stable_sunflower"] = parseCellRules("GoSC1-D034R2d")..states = 5;
   rules["rose"] = parseCellRules("GoSC1-D034R2a");
   rules["blobby"] = parseCellRules("STD@3,4-5,7-8/3/6/M");
-  rules["organic"] = parseCellRules("STD@6-7/2-3,5,6,8/20/M");
+  rules["organic"] = parseCellRules("H1@4,12|20,12|6|5|26|47,C,1,16,1|15|4|7,12|15|13|4");
+  rules["expand"] = parseCellRules("H1@4,32|14|2,12|9|23|29,X,1,20,18|14|15|11|10|19|17|6,2|12|10|19|6|7");
+  rules["pulse"] = parseCellRules("H1@1,1,1,C,1,1,1,1");
+  rules["wind"] = parseCellRules("H1@2,1|7|8,2|7|5|4|6|3|8|1,C,1,14,12,4|7|10|9|14|8|1|6|5");
+  rules["fog"] = parseCellRules("H1@2,3|5|2|8|1,1|5|7|4,+,1,10,8|1|6|2,5|4|6|3|1|2|8");
+  rules["heat"] = parseCellRules("H1@4,14|3|12|46|55|34|47|6|59|38|63|27|25|61|50|60,4|57|41|2|55|17|49|44|3|26|23|13|30|62|5|50|20|46|54|61,+,1,41,27|24|22|5|30|15|33|20|6|23|29,11|36|17|32");
+  rules["fluid"] = parseCellRules("H1@3,16|27|2|18|7|12|11|22|20|3|10|25|4|15|8|13|17|9|23|1|24|21|14|5|19,22|4|8|19|2|24|15|11|27|13,B,1,30,2|15|10,25|10|17|11");
 }
 
 Map<String, CellRules> rules = {};
@@ -202,6 +214,8 @@ class CellRules {
   List<int> birth = [];
   int scale = 1;
   int states = 1;
+  List<int> quickAlives = [];
+  List<int> quickRevives = [];
 
   int count(Grid grid, int x, int y) {
     var c = 0;
@@ -211,8 +225,8 @@ class CellRules {
       final cy = y + counter[1];
       if (cx == x && cy == y) continue;
       final cell = grid.read(cx, cy);
-      if (cell.lastState != cell.states) continue;
       final rule = rules[cell.id]!;
+      if (cell.lastState != cell.states && !rule.quickAlives.contains(cell.lastState)) continue;
 
       c += rule.scale * counter[2];
     }
@@ -223,8 +237,13 @@ class CellRules {
   int newState(Grid grid, Cell cell, int x, int y) {
     final neighbors = count(grid, x, y);
 
-    if (cell.lastState < cell.states && cell.lastState != 0)
+    if (quickRevives.contains(cell.lastState) && birth.contains(neighbors)) {
+      return cell.states;
+    }
+
+    if (cell.lastState < cell.states && cell.lastState != 0) {
       return cell.lastState - 1;
+    }
 
     if (cell.lastState == 0) {
       return birth.contains(neighbors) ? cell.states : 0;
@@ -237,3 +256,13 @@ class CellRules {
 }
 
 var grid = Grid(100, 100);
+
+List<String> handleDefaultSplit(List<String> current, List<String> def) {
+  final cp = [...current];
+
+  while (cp.length < def.length) {
+    cp.add(def[cp.length]);
+  }
+
+  return cp;
+}

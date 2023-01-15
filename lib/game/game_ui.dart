@@ -10,7 +10,11 @@ import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stringy_mess/game/game.dart';
 import 'package:stringy_mess/game/game_bar.dart';
+import 'package:stringy_mess/game/game_side_bar.dart';
 import 'package:stringy_mess/theme.dart';
+
+import '../formats/cells/h1.dart';
+import '../formats/usage.dart';
 
 var stringyGame = StringyGame();
 
@@ -36,10 +40,10 @@ class GameUI extends StatelessWidget {
           child: GameWidget(
             game: stringyGame,
             overlayBuilderMap: {
-              // ignore: prefer_const_constructors
-              'cellbar': (ctx, game) => GameBar(),
+              'cellbar': (ctx, game) => const GameBar(),
+              'sidebar': (ctx, game) => const GameSideBar(),
             },
-            initialActiveOverlays: const ['cellbar'],
+            initialActiveOverlays: const ['cellbar', 'sidebar'],
           ),
         ),
       );
@@ -110,7 +114,7 @@ class StringyGame extends Game with KeyboardEvents {
       initialGrid ??= grid.copy;
     }
 
-    overlays.remove('cellbar');
+    overlays.remove('sidebar');
   }
 
   late Canvas canvas;
@@ -266,6 +270,9 @@ class StringyGame extends Game with KeyboardEvents {
 
     if (!overlays.isActive('cellbar')) {
       overlays.add('cellbar');
+    }
+    if (!overlays.isActive('sidebar')) {
+      overlays.add('sidebar');
     }
   }
 
