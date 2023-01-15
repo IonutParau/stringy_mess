@@ -40,8 +40,10 @@ class GameUI extends StatelessWidget {
           child: GameWidget(
             game: stringyGame,
             overlayBuilderMap: {
-              'cellbar': (ctx, game) => const GameBar(),
-              'sidebar': (ctx, game) => const GameSideBar(),
+              // ignore: prefer_const_constructors
+              'cellbar': (ctx, game) => GameBar(),
+              // ignore: prefer_const_constructors
+              'sidebar': (ctx, game) => GameSideBar(),
             },
             initialActiveOverlays: const ['cellbar', 'sidebar'],
           ),

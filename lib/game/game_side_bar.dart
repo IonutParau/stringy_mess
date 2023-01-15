@@ -58,13 +58,38 @@ class _GameSideBarState extends State<GameSideBar> {
                       height: 5.h,
                       child: Image.asset(
                         'assets/images/buttons/exit_btn.png',
-                        width: 8.w,
-                        height: 8.w,
+                        width: 5.h,
+                        height: 5.h,
                         fit: BoxFit.cover,
                         filterQuality: FilterQuality.none,
                       ),
                       onPressed: () {
                         Navigator.popUntil(context, (route) => route.settings.name == "/home");
+                      },
+                    ),
+                  ),
+                  Tooltip(
+                    message: stringyGame.running ? 'Pause' : 'Play',
+                    decoration: BoxDecoration(
+                      color: turnaryColor,
+                    ),
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 7.sp,
+                    ),
+                    verticalOffset: 2.h,
+                    child: MaterialButton(
+                      height: 5.h,
+                      child: Image.asset(
+                        stringyGame.running ? 'assets/images/buttons/pause_btn.png' : 'assets/images/buttons/play_btn.png',
+                        width: 5.h,
+                        height: 5.h,
+                        fit: BoxFit.cover,
+                        filterQuality: FilterQuality.none,
+                      ),
+                      onPressed: () {
+                        stringyGame.playPause();
+                        setState(() {});
                       },
                     ),
                   ),
@@ -83,8 +108,8 @@ class _GameSideBarState extends State<GameSideBar> {
                         height: 5.h,
                         child: Image.asset(
                           'assets/images/buttons/reset_btn.png',
-                          width: 8.w,
-                          height: 8.w,
+                          width: 5.h,
+                          height: 5.h,
                           fit: BoxFit.cover,
                           filterQuality: FilterQuality.none,
                         ),
@@ -97,31 +122,6 @@ class _GameSideBarState extends State<GameSideBar> {
                         },
                       ),
                     ),
-                  Tooltip(
-                    message: stringyGame.running ? 'Pause' : 'Play',
-                    decoration: BoxDecoration(
-                      color: turnaryColor,
-                    ),
-                    textStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 7.sp,
-                    ),
-                    verticalOffset: 2.h,
-                    child: MaterialButton(
-                      height: 5.h,
-                      child: Image.asset(
-                        stringyGame.running ? 'assets/images/buttons/pause_btn.png' : 'assets/images/buttons/play_btn.png',
-                        width: 8.w,
-                        height: 8.w,
-                        fit: BoxFit.cover,
-                        filterQuality: FilterQuality.none,
-                      ),
-                      onPressed: () {
-                        stringyGame.playPause();
-                        setState(() {});
-                      },
-                    ),
-                  ),
                   Tooltip(
                     message: 'Load Level',
                     decoration: BoxDecoration(
@@ -136,8 +136,8 @@ class _GameSideBarState extends State<GameSideBar> {
                       height: 5.h,
                       child: Image.asset(
                         'assets/images/buttons/load_btn.png',
-                        width: 8.w,
-                        height: 8.w,
+                        width: 5.h,
+                        height: 5.h,
                         fit: BoxFit.cover,
                         filterQuality: FilterQuality.none,
                       ),
@@ -175,8 +175,8 @@ class _GameSideBarState extends State<GameSideBar> {
                       height: 5.h,
                       child: Image.asset(
                         'assets/images/buttons/save_btn.png',
-                        width: 8.w,
-                        height: 8.w,
+                        width: 5.h,
+                        height: 5.h,
                         fit: BoxFit.cover,
                         filterQuality: FilterQuality.none,
                       ),
