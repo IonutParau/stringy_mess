@@ -13,6 +13,9 @@ import 'package:stringy_mess/game/game_bar.dart';
 import 'package:stringy_mess/game/game_side_bar.dart';
 import 'package:stringy_mess/theme.dart';
 
+import '../formats/cells/h1.dart';
+import '../formats/usage.dart';
+
 var stringyGame = StringyGame();
 
 class GameUI extends StatelessWidget {
@@ -322,6 +325,9 @@ class StringyGame extends Game with KeyboardEvents {
       if (keysPressed.contains(LogicalKeyboardKey.keyX)) {
         final cellsL = cells.toList();
         current = cellsL[(cellsL.indexOf(current) + 1) % cells.length];
+      }
+      if (keysPressed.contains(LogicalKeyboardKey.keyT)) {
+        rules["experiment"] = parseCellRules(randomH1());
       }
     }
     if (event is RawKeyUpEvent) {

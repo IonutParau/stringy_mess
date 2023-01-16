@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:flame/flame.dart';
-
 var primaryColor = const Color.fromARGB(255, 7, 38, 68);
 var secondaryColor = const Color.fromARGB(255, 1, 27, 53);
 var turnaryColor = const Color.fromARGB(255, 5, 34, 62);
@@ -19,7 +17,10 @@ class UserTheme {
   @override
   bool operator ==(Object other) {
     if (other is! UserTheme) return false;
-    return name == other.name && primary == other.primary && secondary == other.secondary && turnary == other.turnary;
+    return name == other.name &&
+        primary == other.primary &&
+        secondary == other.secondary &&
+        turnary == other.turnary;
   }
 
   UserTheme(this.name, this.primary, this.secondary, this.turnary);
@@ -56,7 +57,11 @@ class UserTheme {
   }
 
   factory UserTheme.ocean() {
-    return UserTheme("Ocean", const Color.fromARGB(255, 7, 38, 68), const Color.fromARGB(255, 1, 27, 53), const Color.fromARGB(255, 5, 34, 62));
+    return UserTheme(
+        "Ocean",
+        const Color.fromARGB(255, 7, 38, 68),
+        const Color.fromARGB(255, 1, 27, 53),
+        const Color.fromARGB(255, 5, 34, 62));
   }
 
   factory UserTheme.nord() {

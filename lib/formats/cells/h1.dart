@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:stringy_mess/game/game.dart';
 
 String randomH1() {
@@ -27,8 +28,11 @@ String randomH1() {
     quickRevives.add(rng.nextInt(states) + 1);
   }
 
-  print(
-      'H1@$radius,${births.join('|')},${deaths.join('|')},$shape,$scale,$states,${quickRevives.join('|')},${quickAlives.join('|')}');
+  if (kDebugMode) {
+    print(
+      'H1@$radius,${births.join('|')},${deaths.join('|')},$shape,$scale,$states,${quickRevives.join('|')},${quickAlives.join('|')}',
+    );
+  }
 
   return 'H1@$radius,${births.join('|')},${deaths.join('|')},$shape,$scale,$states,${quickRevives.join('|')},${quickAlives.join('|')}';
 }
