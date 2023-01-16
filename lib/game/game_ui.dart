@@ -131,10 +131,10 @@ class StringyGame extends Game with KeyboardEvents {
         drawCell(x, y);
       });
     } else {
-      int sx = smoothCamX ~/ cellSize;
-      int sy = smoothCamY ~/ cellSize;
-      int ex = sx + (canvasSize.x / cellSize).ceil();
-      int ey = sy + (canvasSize.y / cellSize).ceil();
+      int sx = smoothCamX ~/ smoothCellSize;
+      int sy = smoothCamY ~/ smoothCellSize;
+      int ex = sx + (canvasSize.x / smoothCellSize).ceil();
+      int ey = sy + (canvasSize.y / smoothCellSize).ceil();
 
       sx = max(sx, 0);
       sy = max(sy, 0);
@@ -149,18 +149,21 @@ class StringyGame extends Game with KeyboardEvents {
     }
 
     if (mouseInside) {
-      final mx = (mousex + smoothCamX) ~/ cellSize;
-      final my = (mousey + smoothCamY) ~/ cellSize;
+      final mx = (mousex + smoothCamX) ~/ smoothCellSize;
+      final my = (mousey + smoothCamY) ~/ smoothCellSize;
 
       if (grid.doesNotWrap(mx, my)) {
-        final size = cellSize / 3;
+        final size = smoothCellSize / 3;
         final off = ((lerp(0, 1, (normTime % 0.5) / 0.5) - 0.5) * size).abs();
 
         canvas.drawRect(
-          Offset(mx * cellSize - smoothCamX - brushSize * cellSize,
-                  my * cellSize - smoothCamY - brushSize * cellSize) &
-              Size(cellSize * (brushSize * 2 + 1),
-                  cellSize * (brushSize * 2 + 1)),
+          Offset(
+                  mx * smoothCellSize - smoothCamX - brushSize * smoothCellSize,
+                  my * smoothCellSize -
+                      smoothCamY -
+                      brushSize * smoothCellSize) &
+              Size(smoothCellSize * (brushSize * 2 + 1),
+                  smoothCellSize * (brushSize * 2 + 1)),
           Paint()
             ..color = Colors.white.withOpacity(0.25)
             ..style = PaintingStyle.stroke
@@ -173,9 +176,9 @@ class StringyGame extends Game with KeyboardEvents {
       for (var oy = -brushSize; oy <= brushSize; oy++) {
         Sprite(Flame.images.fromCache('cells/$current.png')).render(
           canvas,
-          position: Vector2(mousex - cellSize / 2 + ox * cellSize,
-              mousey - cellSize / 2 + oy * cellSize),
-          size: Vector2.all(cellSize),
+          position: Vector2(mousex - smoothCellSize / 2 + ox * smoothCellSize,
+              mousey - smoothCellSize / 2 + oy * smoothCellSize),
+          size: Vector2.all(smoothCellSize),
           overridePaint: Paint()
             ..color = Colors.white.withOpacity(0.2 * (currentState / maxState)),
         );
@@ -195,16 +198,20 @@ class StringyGame extends Game with KeyboardEvents {
 
     tp.layout();
 
-    final textPos = Vector2(mousex - tp.width / 2,
-        mousey - cellSize / 2 + brushSize * cellSize + 1.3 * cellSize);
+    final textPos = Vector2(
+        mousex - tp.width / 2,
+        mousey -
+            smoothCellSize / 2 +
+            brushSize * smoothCellSize +
+            1.3 * smoothCellSize);
     tp.paint(canvas, textPos.toOffset());
   }
 
   void drawCell(int x, int y) {
     final cell = grid.read(x, y);
 
-    final screenX = x * cellSize - smoothCamX;
-    final screenY = y * cellSize - smoothCamY;
+    final screenX = x * smoothCellSize - smoothCamX;
+    final screenY = y * smoothCellSize - smoothCamY;
 
     final lot = cell.lastState / cell.states;
     final cot = cell.state / cell.states;
@@ -213,10 +220,15 @@ class StringyGame extends Game with KeyboardEvents {
     Sprite(Flame.images.fromCache('cells/${cell.id}.png')).render(
       canvas,
       position: Vector2(screenX, screenY),
-      size: Vector2.all(cellSize.toDouble()),
+      size: Vector2.all(smoothCellSize.toDouble()),
       overridePaint: Paint()
-        ..color =
-            Colors.white.withOpacity(lerp(lastOp, currentOp, lerpT(ilerp))),
+        ..color = Colors.white.withOpacity(
+          lerp(
+            lastOp,
+            currentOp,
+            lerpT(ilerp),
+          ),
+        ),
     );
   }
 
@@ -246,8 +258,8 @@ class StringyGame extends Game with KeyboardEvents {
         mouseDown &&
         mouseInside &&
         canplace) {
-      final cx = (mousex + smoothCamX) ~/ cellSize;
-      final cy = (mousey + smoothCamY) ~/ cellSize;
+      final cx = (mousex + smoothCamX) ~/ smoothCellSize;
+      final cy = (mousey + smoothCamY) ~/ smoothCellSize;
 
       for (var x = cx - brushSize; x <= cx + brushSize; x++) {
         for (var y = cy - brushSize; y <= cy + brushSize; y++) {
@@ -261,8 +273,8 @@ class StringyGame extends Game with KeyboardEvents {
         mouseDown &&
         mouseInside &&
         canplace) {
-      final cx = (mousex + smoothCamX) ~/ cellSize;
-      final cy = (mousey + smoothCamY) ~/ cellSize;
+      final cx = (mousex + smoothCamX) ~/ smoothCellSize;
+      final cy = (mousey + smoothCamY) ~/ smoothCellSize;
 
       for (var x = cx - brushSize; x <= cx + brushSize; x++) {
         for (var y = cy - brushSize; y <= cy + brushSize; y++) {
@@ -380,7 +392,7 @@ class StringyGame extends Game with KeyboardEvents {
 
     camX = (camX + canvasSize.x / 2) * scale - canvasSize.x / 2;
     camY = (camY + canvasSize.y / 2) * scale - canvasSize.y / 2;
-    smoothCamX = (smoothCamX + canvasSize.x / 2) * scale - canvasSize.x / 2;
-    smoothCamY = (smoothCamY + canvasSize.y / 2) * scale - canvasSize.y / 2;
+    // smoothCamX = (smoothCamX + canvasSize.x / 2) * scale - canvasSize.x / 2;
+    // smoothCamY = (smoothCamY + canvasSize.y / 2) * scale - canvasSize.y / 2;
   }
 }

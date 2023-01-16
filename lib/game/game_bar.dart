@@ -36,7 +36,7 @@ class _GameBarState extends State<GameBar> {
             },
             child: Container(
               width: constraints.maxWidth - 10.w,
-              height: 5.h,
+              height: 7.h,
               color: turnaryColor,
               padding: EdgeInsets.symmetric(horizontal: 3.w),
               child: Row(
@@ -44,7 +44,7 @@ class _GameBarState extends State<GameBar> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Scrollbar(
-                      thickness: 0.5.h,
+                      thickness: 1.h,
                       scrollbarOrientation: ScrollbarOrientation.bottom,
                       controller: scrollController,
                       child: ListView.builder(
@@ -53,8 +53,10 @@ class _GameBarState extends State<GameBar> {
                         itemCount: cells.length,
                         itemBuilder: (ctx, i) {
                           return MaterialButton(
+                            key: ValueKey(cellsL[i]),
                             child: Opacity(
-                              opacity: stringyGame.current == cellsL[i] ? 1 : 0.2,
+                              opacity:
+                                  stringyGame.current == cellsL[i] ? 1 : 0.2,
                               child: Image.asset(
                                 'assets/images/cells/${cellsL[i]}.png',
                                 width: 8.w,
@@ -64,8 +66,10 @@ class _GameBarState extends State<GameBar> {
                               ),
                             ),
                             onPressed: () {
+                              stringyGame.canplace = false;
                               stringyGame.current = cellsL[i];
-                              stringyGame.currentState = rules[cellsL[i]]!.states;
+                              stringyGame.currentState =
+                                  rules[cellsL[i]]!.states;
                               stringyGame.maxState = rules[cellsL[i]]!.states;
                               setState(() {});
                             },
