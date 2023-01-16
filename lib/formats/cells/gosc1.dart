@@ -38,16 +38,16 @@ CellRules parseGoSC1(String rules) {
   cr.birth = birth;
 
   if (shape == "d" || shape == "n") {
-    cr.counters.add([-1, -1, 1]);
-    cr.counters.add([1, 1, 1]);
-    cr.counters.add([-1, 1, 1]);
-    cr.counters.add([1, -1, 1]);
+    cr.addCounter(-1, -1, 1);
+    cr.addCounter(1, 1, 1);
+    cr.addCounter(-1, 1, 1);
+    cr.addCounter(1, -1, 1);
   }
   if (shape == "a" || shape == "n") {
-    cr.counters.add([0, -1, 1]);
-    cr.counters.add([0, 1, 1]);
-    cr.counters.add([-1, 0, 1]);
-    cr.counters.add([1, 0, 1]);
+    cr.addCounter(0, -1, 1);
+    cr.addCounter(0, 1, 1);
+    cr.addCounter(-1, 0, 1);
+    cr.addCounter(1, 0, 1);
   }
 
   return cr;

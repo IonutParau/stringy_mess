@@ -27,7 +27,8 @@ String randomH1() {
     quickRevives.add(rng.nextInt(states) + 1);
   }
 
-  print('H1@$radius,${births.join('|')},${deaths.join('|')},$shape,$scale,$states,${quickRevives.join('|')},${quickAlives.join('|')}');
+  print(
+      'H1@$radius,${births.join('|')},${deaths.join('|')},$shape,$scale,$states,${quickRevives.join('|')},${quickAlives.join('|')}');
 
   return 'H1@$radius,${births.join('|')},${deaths.join('|')},$shape,$scale,$states,${quickRevives.join('|')},${quickAlives.join('|')}';
 }
@@ -42,7 +43,8 @@ CellRules parseH1(String str) {
 
   final cr = CellRules();
 
-  final parts = handleDefaultSplit(str.split(','), ['1', '', '', 'B', '0', '1', '', '']);
+  final parts =
+      handleDefaultSplit(str.split(','), ['1', '', '', 'B', '0', '1', '', '']);
 
   final radius = int.parse(parts[0]);
 
@@ -119,7 +121,7 @@ CellRules parseH1(String str) {
     for (var x = -radius; x <= radius; x++) {
       for (var y = -radius; y <= radius; y++) {
         if (x == 0 && y == 0) continue;
-        cr.counters.add([x, y, 1]);
+        cr.addCounter(x, y, 1);
       }
     }
   }
@@ -128,7 +130,7 @@ CellRules parseH1(String str) {
       for (var y = -radius; y <= radius; y++) {
         if (x == 0 && y == 0) continue;
         if (sqrt(x * x + y * y) <= radius) {
-          cr.counters.add([x, y, 1]);
+          cr.addCounter(x, y, 1);
         }
       }
     }
@@ -136,21 +138,21 @@ CellRules parseH1(String str) {
   if (shape == "X") {
     for (var i = -radius; i <= radius; i++) {
       if (i == 0) continue;
-      cr.counters.add([i, i, 1]);
+      cr.addCounter(i, i, 1);
     }
     for (var i = -radius; i <= radius; i++) {
       if (i == 0) continue;
-      cr.counters.add([-i, i, 1]);
+      cr.addCounter(-i, i, 1);
     }
   }
   if (shape == "+") {
     for (var i = -radius; i <= radius; i++) {
       if (i == 0) continue;
-      cr.counters.add([0, i, 1]);
+      cr.addCounter(0, i, 1);
     }
     for (var i = -radius; i <= radius; i++) {
       if (i == 0) continue;
-      cr.counters.add([i, 0, 1]);
+      cr.addCounter(i, 0, 1);
     }
   }
 

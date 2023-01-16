@@ -2,7 +2,7 @@ import 'package:stringy_mess/game/game.dart';
 
 // Standard notation
 // For example: 2/2/3/M
-// This means "born if 2 alive neighbors, die if 2 alive neighbors, 3 states, Moore neighboring"
+// This means "survive if 2 alive neighbors, born if 2 alive neighbors, 3 states, Moore neighboring"
 
 CellRules parseSTDcell(String str) {
   str = str.substring(4);
@@ -66,19 +66,19 @@ CellRules parseSTDcell(String str) {
   cr.states = states;
 
   if (neighborCounting == "VM") {
-    cr.counters.add([1, 0, 1]);
-    cr.counters.add([-1, 0, 1]);
-    cr.counters.add([0, 1, 1]);
-    cr.counters.add([0, -1, 1]);
+    cr.addCounter(1, 0, 1);
+    cr.addCounter(-1, 0, 1);
+    cr.addCounter(0, 1, 1);
+    cr.addCounter(0, -1, 1);
   } else if (neighborCounting == "M") {
-    cr.counters.add([1, 0, 1]);
-    cr.counters.add([-1, 0, 1]);
-    cr.counters.add([0, 1, 1]);
-    cr.counters.add([0, -1, 1]);
-    cr.counters.add([1, -1, 1]);
-    cr.counters.add([-1, 1, 1]);
-    cr.counters.add([1, 1, 1]);
-    cr.counters.add([-1, -1, 1]);
+    cr.addCounter(1, 0, 1);
+    cr.addCounter(-1, 0, 1);
+    cr.addCounter(0, 1, 1);
+    cr.addCounter(0, -1, 1);
+    cr.addCounter(1, -1, 1);
+    cr.addCounter(-1, 1, 1);
+    cr.addCounter(1, 1, 1);
+    cr.addCounter(-1, -1, 1);
   }
 
   return cr;
