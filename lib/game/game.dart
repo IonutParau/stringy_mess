@@ -223,17 +223,20 @@ class CellRules {
   HashSet<int> quickAlives = HashSet.identity();
   HashSet<int> quickRevives = HashSet.identity();
 
-  int count(Grid grid, int x, int y) {
+  int count(Grid grid, int x, int y, int currentState) {
     var c = 0;
 
     for (var counter in counters) {
+      if (counter.blockedBy.contains(currentState)) continue;
       final cx = x + counter.offX;
       final cy = y + counter.offY;
       if (cx == x && cy == y) continue;
       final cell = grid.read(cx, cy);
       final rule = rules[cell.id]!;
       if (cell.lastState != cell.states &&
-          !rule.quickAlives.contains(cell.lastState)) continue;
+          !rule.quickAlives.contains(cell.lastState)) {
+        continue;
+      }
 
       c += rule.scale * counter.scale;
     }
@@ -242,7 +245,7 @@ class CellRules {
   }
 
   int newState(Grid grid, Cell cell, int x, int y) {
-    final neighbors = count(grid, x, y);
+    final neighbors = count(grid, x, y, cell.state);
 
     if (quickRevives.contains(cell.lastState) && birth.contains(neighbors)) {
       return cell.states;
@@ -261,8 +264,13 @@ class CellRules {
     return cell.lastState;
   }
 
-  void addCounter(int offX, int offY, int scale) {
-    counters.add(CellCounter(offX, offY, scale));
+  void addCounter(int offX, int offY, int scale, [HashSet<int>? blockedBy]) {
+    counters.add(CellCounter(
+      offX,
+      offY,
+      scale,
+      blockedBy ?? HashSet<int>.identity(),
+    ));
   }
 }
 
@@ -282,6 +290,7 @@ class CellCounter {
   int offX;
   int offY;
   int scale;
+  HashSet<int> blockedBy;
 
-  CellCounter(this.offX, this.offY, this.scale);
+  CellCounter(this.offX, this.offY, this.scale, this.blockedBy);
 }
