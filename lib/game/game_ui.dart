@@ -13,9 +13,6 @@ import 'package:stringy_mess/game/game_bar.dart';
 import 'package:stringy_mess/game/game_side_bar.dart';
 import 'package:stringy_mess/theme.dart';
 
-import '../formats/cells/h1.dart';
-import '../formats/usage.dart';
-
 var stringyGame = StringyGame();
 
 class GameUI extends StatelessWidget {
@@ -124,7 +121,8 @@ class StringyGame extends Game with KeyboardEvents {
   @override
   void render(Canvas canvas) {
     this.canvas = canvas;
-    canvas.drawRect(Offset.zero & canvasSize.toSize(), Paint()..color = turnaryColor);
+    canvas.drawRect(
+        Offset.zero & canvasSize.toSize(), Paint()..color = turnaryColor);
     if (!loaded) {
       return;
     }
@@ -159,7 +157,10 @@ class StringyGame extends Game with KeyboardEvents {
         final off = ((lerp(0, 1, (normTime % 0.5) / 0.5) - 0.5) * size).abs();
 
         canvas.drawRect(
-          Offset(mx * cellSize - smoothCamX - brushSize * cellSize, my * cellSize - smoothCamY - brushSize * cellSize) & Size(cellSize * (brushSize * 2 + 1), cellSize * (brushSize * 2 + 1)),
+          Offset(mx * cellSize - smoothCamX - brushSize * cellSize,
+                  my * cellSize - smoothCamY - brushSize * cellSize) &
+              Size(cellSize * (brushSize * 2 + 1),
+                  cellSize * (brushSize * 2 + 1)),
           Paint()
             ..color = Colors.white.withOpacity(0.25)
             ..style = PaintingStyle.stroke
@@ -172,14 +173,17 @@ class StringyGame extends Game with KeyboardEvents {
       for (var oy = -brushSize; oy <= brushSize; oy++) {
         Sprite(Flame.images.fromCache('cells/$current.png')).render(
           canvas,
-          position: Vector2(mousex - cellSize / 2 + ox * cellSize, mousey - cellSize / 2 + oy * cellSize),
+          position: Vector2(mousex - cellSize / 2 + ox * cellSize,
+              mousey - cellSize / 2 + oy * cellSize),
           size: Vector2.all(cellSize),
-          overridePaint: Paint()..color = Colors.white.withOpacity(0.2 * (currentState / maxState)),
+          overridePaint: Paint()
+            ..color = Colors.white.withOpacity(0.2 * (currentState / maxState)),
         );
       }
     }
 
-    final text = "${brushSize * 2 + 1}x${brushSize * 2 + 1} | $currentState / $maxState (${(currentState / maxState * 100).toStringAsFixed(2)}%)";
+    final text =
+        "${brushSize * 2 + 1}x${brushSize * 2 + 1} | $currentState / $maxState (${(currentState / maxState * 100).toStringAsFixed(2)}%)";
 
     final tp = TextPainter(
       text: TextSpan(
@@ -191,7 +195,8 @@ class StringyGame extends Game with KeyboardEvents {
 
     tp.layout();
 
-    final textPos = Vector2(mousex - tp.width / 2, mousey - cellSize / 2 + brushSize * cellSize + 1.3 * cellSize);
+    final textPos = Vector2(mousex - tp.width / 2,
+        mousey - cellSize / 2 + brushSize * cellSize + 1.3 * cellSize);
     tp.paint(canvas, textPos.toOffset());
   }
 
@@ -209,13 +214,17 @@ class StringyGame extends Game with KeyboardEvents {
       canvas,
       position: Vector2(screenX, screenY),
       size: Vector2.all(cellSize.toDouble()),
-      overridePaint: Paint()..color = Colors.white.withOpacity(lerp(lastOp, currentOp, lerpT(ilerp))),
+      overridePaint: Paint()
+        ..color =
+            Colors.white.withOpacity(lerp(lastOp, currentOp, lerpT(ilerp))),
     );
   }
 
   @override
   void update(double dt) {
-    final speed = keysPressed.contains(LogicalKeyboardKey.shiftLeft) ? camSpeed * 2 : camSpeed;
+    final speed = keysPressed.contains(LogicalKeyboardKey.shiftLeft)
+        ? camSpeed * 2
+        : camSpeed;
     if (keysPressed.contains(LogicalKeyboardKey.keyW)) {
       camY -= speed * dt;
     }
@@ -233,7 +242,10 @@ class StringyGame extends Game with KeyboardEvents {
     smoothCamY += (camY - smoothCamY) * dt;
     smoothCellSize += (cellSize - smoothCellSize) * dt;
 
-    if (mouseButton == kPrimaryMouseButton && mouseDown && mouseInside && canplace) {
+    if (mouseButton == kPrimaryMouseButton &&
+        mouseDown &&
+        mouseInside &&
+        canplace) {
       final cx = (mousex + smoothCamX) ~/ cellSize;
       final cy = (mousey + smoothCamY) ~/ cellSize;
 
@@ -245,14 +257,19 @@ class StringyGame extends Game with KeyboardEvents {
         }
       }
     }
-    if (mouseButton == kSecondaryMouseButton && mouseDown && mouseInside && canplace) {
+    if (mouseButton == kSecondaryMouseButton &&
+        mouseDown &&
+        mouseInside &&
+        canplace) {
       final cx = (mousex + smoothCamX) ~/ cellSize;
       final cy = (mousey + smoothCamY) ~/ cellSize;
 
       for (var x = cx - brushSize; x <= cx + brushSize; x++) {
         for (var y = cy - brushSize; y <= cy + brushSize; y++) {
           if (grid.doesNotWrap(x, y)) {
-            keysPressed.contains(LogicalKeyboardKey.controlLeft) ? grid.reset(x, y) : grid.write(x, y, Cell(current));
+            keysPressed.contains(LogicalKeyboardKey.controlLeft)
+                ? grid.reset(x, y)
+                : grid.write(x, y, Cell(current));
           }
         }
       }
@@ -279,7 +296,8 @@ class StringyGame extends Game with KeyboardEvents {
   }
 
   @override
-  KeyEventResult onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+  KeyEventResult onKeyEvent(
+      RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     if (event is RawKeyDownEvent) {
       this.keysPressed = keysPressed;
       if (keysPressed.contains(LogicalKeyboardKey.space)) {

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:stringy_mess/game/game.dart';
 
 // Credit to the creators of GoSC1: Blendi.
@@ -10,8 +12,8 @@ CellRules parseGoSC1(String rules) {
   final chars = rules.substring(6).split('');
 
   var shape = "n";
-  final dead = <int>[];
-  final birth = <int>[];
+  final dead = HashSet<int>.identity();
+  final birth = HashSet<int>.identity();
   var mode = "none";
 
   for (var char in chars) {

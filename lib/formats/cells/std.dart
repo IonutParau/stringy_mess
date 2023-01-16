@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:stringy_mess/game/game.dart';
 
 // Standard notation
@@ -10,8 +12,8 @@ CellRules parseSTDcell(String str) {
   final cr = CellRules();
 
   final parts = str.split('/');
-  final birth = <int>[];
-  final death = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+  final birth = HashSet<int>.identity();
+  final death = HashSet<int>.from([0, 1, 2, 3, 4, 5, 6, 7, 8]);
 
   if (parts.isEmpty) {
     parts.add('');

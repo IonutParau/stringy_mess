@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:math';
 
-import 'package:stringy_mess/formats/cells/h1.dart';
 import 'package:stringy_mess/formats/usage.dart';
 
 Set<String> cells = {
@@ -217,12 +216,12 @@ class Grid {
 
 class CellRules {
   List<CellCounter> counters = [];
-  List<int> death = [];
-  List<int> birth = [];
+  HashSet<int> death = HashSet.identity();
+  HashSet<int> birth = HashSet.identity();
   int scale = 1;
   int states = 1;
-  List<int> quickAlives = [];
-  List<int> quickRevives = [];
+  HashSet<int> quickAlives = HashSet.identity();
+  HashSet<int> quickRevives = HashSet.identity();
 
   int count(Grid grid, int x, int y) {
     var c = 0;
