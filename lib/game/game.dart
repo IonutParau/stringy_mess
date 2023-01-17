@@ -259,6 +259,31 @@ class Grid {
     });
   }
 
+  Grid subgrid(int cx, int cy, int w, int h) {
+    if (infinite) {
+      final g = Grid.infinite();
+
+      for (var ox = 0; ox < w; ox++) {
+        for (var oy = 0; oy < h; oy++) {
+          // If it actually exists!
+          if (_infgrid["${cx + ox} ${cy + oy}"] != null) {
+            g.write(ox, oy, read(cx + ox, cy + oy));
+          }
+        }
+      }
+
+      return g;
+    } else {
+      final g = Grid(w, h);
+      for (var ox = 0; ox < w; ox++) {
+        for (var oy = 0; oy < h; oy++) {
+          g.write(ox, oy, read(cx + ox, cy + oy));
+        }
+      }
+      return g;
+    }
+  }
+
   void replaceAll(String newID) {
     iterate((x, y, cell) {
       final p = cell.state / cell.states;
