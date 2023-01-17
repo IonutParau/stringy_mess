@@ -127,7 +127,7 @@ void initBaseRules() {
   rules["experiment"] = parseCellRules(randomH1());
 }
 
-Map<String, CellRules> rules = {};
+HashMap<String, CellRules> rules = HashMap();
 
 class Cell {
   String id;
