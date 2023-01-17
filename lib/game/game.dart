@@ -33,7 +33,6 @@ Set<String> cells = {
   "stable_gol",
   "stable_bosco",
   "stable_sunflower",
-  "experiment",
 };
 
 void initBaseRules() {
@@ -123,8 +122,6 @@ void initBaseRules() {
   rules["fluid"] = parseCellRules(
     "H1@3,16|27|2|18|7|12|11|22|20|3|10|25|4|15|8|13|17|9|23|1|24|21|14|5|19,22|4|8|19|2|24|15|11|27|13,B,1,30,2|15|10,25|10|17|11",
   );
-
-  rules["experiment"] = parseCellRules(randomH1());
 }
 
 HashMap<String, CellRules> rules = HashMap();
@@ -134,21 +131,25 @@ class Cell {
   late int state;
   late int lastState;
   late int states;
+  late CellRules rule;
 
   Cell(this.id) {
-    states = rules[id]?.states ?? 1;
+    rule = rules[id]!;
+    states = rule.states;
     lastState = 0;
     state = 0;
   }
 
   Cell.alive(this.id) {
-    states = rules[id]?.states ?? 1;
+    rule = rules[id]!;
+    states = rule.states;
     lastState = states;
     state = states;
   }
 
   Cell.withState(this.id, int currState) {
-    states = rules[id]?.states ?? 1;
+    rule = rules[id]!;
+    states = rule.states;
     lastState = max(min(currState, states), 0);
     state = max(min(currState, states), 0);
   }
@@ -170,7 +171,8 @@ class Cell {
   }
 
   void fix() {
-    states = rules[id]!.states;
+    rule = rules[id]!;
+    states = rule.states;
   }
 }
 
@@ -255,7 +257,6 @@ class Grid {
 
   void replaceAll(String newID) {
     iterate((x, y, cell) {
-      cell.fix();
       final p = cell.state / cell.states;
       final lp = cell.lastState / cell.states;
 
@@ -273,10 +274,7 @@ class Grid {
   }
 
   void update() {
-    iterate((x, y, c) {
-      c.fix();
-      c.lastState = c.state;
-    });
+    iterate((x, y, c) => c.lastState = c.state);
     iterate(updateCell);
   }
 
