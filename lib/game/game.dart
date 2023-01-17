@@ -251,6 +251,21 @@ class Grid {
     }
   }
 
+  void overlay(Grid other, int x, int y) {}
+
+  void replaceAll(String newID) {
+    iterate((x, y, cell) {
+      cell.fix();
+      final p = cell.state / cell.states;
+      final lp = cell.lastState / cell.states;
+
+      cell.id = newID;
+      cell.fix();
+      cell.state = (p * cell.states).toInt();
+      cell.lastState = (lp * cell.states).toInt();
+    });
+  }
+
   void updateCell(int x, int y, Cell cell) {
     final rule = rules[cell.id]!;
 

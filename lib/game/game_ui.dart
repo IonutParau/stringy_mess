@@ -320,11 +320,26 @@ class StringyGame extends Game with KeyboardEvents {
       }
       if (keysPressed.contains(LogicalKeyboardKey.keyZ)) {
         final cellsL = cells.toList();
+        final p = currentState / maxState;
         current = cellsL[(cellsL.indexOf(current) - 1) % cells.length];
+        currentState = (rules[current]!.states * p).toInt();
+        overlays.remove('cellbar');
       }
       if (keysPressed.contains(LogicalKeyboardKey.keyX)) {
         final cellsL = cells.toList();
+        final p = currentState / maxState;
         current = cellsL[(cellsL.indexOf(current) + 1) % cells.length];
+        currentState = (rules[current]!.states * p).toInt();
+        overlays.remove('cellbar');
+      }
+      if (keysPressed.contains(LogicalKeyboardKey.minus)) {
+        setCellSize(cellSize * 2);
+      }
+      if (keysPressed.contains(LogicalKeyboardKey.equal)) {
+        setCellSize(cellSize / 2);
+      }
+      if (keysPressed.contains(LogicalKeyboardKey.keyR)) {
+        grid.replaceAll(current);
       }
       if (keysPressed.contains(LogicalKeyboardKey.keyT)) {
         rules["experiment"] = parseCellRules(randomH1());
