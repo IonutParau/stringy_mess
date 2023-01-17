@@ -371,7 +371,7 @@ class CellRules {
       offX,
       offY,
       scale,
-      blockedBy ?? HashSet<int>.identity(),
+      blockedBy ?? HashSet<int>(),
     ));
   }
 }
