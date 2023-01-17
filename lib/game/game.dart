@@ -253,7 +253,11 @@ class Grid {
     }
   }
 
-  void overlay(Grid other, int x, int y) {}
+  void overlay(Grid other, int x, int y) {
+    other.iterate((cx, cy, c) {
+      write(x + cx, y + cy, c);
+    });
+  }
 
   void replaceAll(String newID) {
     iterate((x, y, cell) {

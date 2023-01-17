@@ -202,11 +202,12 @@ class StringyGame extends Game with KeyboardEvents {
     tp.layout();
 
     final textPos = Vector2(
-        mousex - tp.width / 2,
-        mousey -
-            smoothCellSize / 2 +
-            brushSize * smoothCellSize +
-            1.3 * smoothCellSize);
+      mousex - tp.width / 2,
+      mousey -
+          smoothCellSize / 2 +
+          brushSize * smoothCellSize +
+          1.3 * smoothCellSize,
+    );
     tp.paint(canvas, textPos.toOffset());
   }
 
